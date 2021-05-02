@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Star Wars Tic Tac Toe</title>
+        <meta name="description" content="Star Wars Themed Tic Tac Toe">
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+
+        <h1>Star Wars Themed Tic Toc Toe</h1>
+
+        <img id="lightsaber" src="img/lightsaber2.png" alt="Lightsaber">
+
+
+        <div id="gameboard">
+
+
+            <table>
+                <tr>
+                    <td class="cells" onclick="playerAction(this, 0, 0)"></td>
+                    <td class="cells" onclick="playerAction(this, 0, 1)"></td>
+                    <td class="cells" onclick="playerAction(this, 0, 2)"></td>
+                </tr>
+
+                <tr>
+                    <td class="cells" onclick="playerAction(this, 1, 0)"></td>
+                    <td class="cells" onclick="playerAction(this, 1, 1)"></td>
+                    <td class="cells" onclick="playerAction(this, 1, 2)"></td>
+                </tr>
+
+                <tr>
+                    <td class="cells" onclick="playerAction(this, 2, 0)"></td>
+                    <td class="cells" onclick="playerAction(this, 2, 1)"></td>
+                    <td class="cells" onclick="playerAction(this, 2, 2)"></td>
+                </tr>
+            </table>
+
+            <!--For snow -->
+            <div class="canvasleft">
+
+                <canvas id="container">
+
+                </canvas>
+
+            </div>
+
+            
+            <div class="canvasright">
+
+            </div>
+            <!--End of snow-->
+
+
+            <div class="endofthegame">
+
+                <div class=message id="playerturns">Chewy's turn</div>
+
+            </div>
+        </div>
+
+
+        <button id="replay">Replay Game</button>
+    
+         <!--Music-->
+         <audio src="../audio/Star Wars The Imperial March Darth Vaders Theme.mp3"></audio>
+
+
+        <script>
+
+            var turn = 1;
+            var winner = -1; //this will be used to track which player won the game
+            var clickChecker = 0;
+            var matrix = [
+                [-1, -1, -1],
+                [-1, -1, -1],
+                [-1, -1, -1],
+            ]
+
+
+            //function is invoked whenever someone clicks on a cell
+            function playerAction(element, tr, cells) {
+
+                if(element.innerHTML != "") return; //prevents a cell from being clickable twice in the same game.
+                if(winner != -1) return;
+
+                clickChecker++;
+
+                matrix[tr][cells] = turn;
+                if(turn == 1) {
+                    element.innerHTML = "<img src=/img/chewy.png>";
+                    document.getElementById("playerturns").innerHTML = "Darth Vader's turn";
+                    turn = 2;
+                }
+
+                else if(turn == 2) {
+                    element.innerHTML = "<img src=/img/Vader.png>";
+                    document.getElementById("playerturns").innerHTML = "Chewy's turn";
+                    turn = 1;
+                }
+
+                //Seeing who won
+                for(var i=0; i< 3; i++) {
+                    //tr winner
+                    if(matrix[i][0] == matrix[i][1] && matrix[i][1] == matrix[i][2]) winner = matrix[i][0];
+
+                    //cells winner
+                    if(matrix[0][i] == matrix[1][i] && matrix[1][i] == matrix[2][i]) winner = matrix[0][i];
+                }
+
+                //diagonal winner
+                if(matrix[0][0] == matrix[1][1] == matrix[2][2]) winner = matrix[1][1];
+                if(matrix[0][2] == matrix[1][1] == matrix[2][0]) winner = matrix[1][1];
+                //There are 2 diagonal winners
+
+                if(winner != -1) {
+                    document.getElementById("playerturns").innerHTML = "Darth Vader" + winner + "wins!";
+                }
+
+                //The game is at a draw, no winners
+                if(clickChecker == 9 && winner -1) {
+                    document.getElementById("playerturns").innerHTML = "Draw! No winner";
+                }
+            }
+
+            //------------------------------------------------------------------------------------
+            //Play audio automatically
+            window.addEventListener("DOMContentLoaded", event => {
+                const audio = document.querySelector("audio");
+                audio.volume = 0.2;
+                audio.play();
+            });
+
+            //------------------------------------------------------------------------------------
+            //Adding the snow (left side) via canvas
+
+            var canvas = document.createElement('canvas')
+canvas.id = 'snow'
+
+var container = document.getElementsByClassName('container');
+
+container[0].appendChild(canvas)
+
+window.onload = function(){
+var canvas = document.getElementById("snow");
+canvas.style.position = 'absolute';
+canvas.style.top = 0;
+canvas.style.left = 0;
+
+var ctx = canvas.getContext("2d");
+
+var W = window.innerWidth
+var H = $(header[0]).height();
+canvas.width = W;
+canvas.height = H;
+ 
+var mp = 225; //max particles
+var particles = [];
+for (var i = 0; i < mp; i++) {
+ particles.push({
+ x: Math.random()*W, //x-coordinate
+ y: Math.random()*H, //y-coordinate
+ r: Math.random()*4+1, //radius
+ d: Math.random()*mp //density
+ });
+}
+ 
+//Lets draw the flakes
+function draw() {
+ ctx.clearRect(0, 0, W, H);
+ 
+ ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+ ctx.beginPath();
+ for(var i = 0; i < mp; i++)
+ {
+ var p = particles[i];
+ ctx.moveTo(p.x, p.y);
+ ctx.arc(p.x, p.y, p.r, 0, Math.PI*2, true);
+ }
+ ctx.fill();
+ update();
+}
+ 
+//Function to move the snowflakes
+//angle will be an ongoing incremental flag. Sin and Cos functions will be applied to it to create vertical and horizontal movements of the flakes
+var angle = 0;
+function update()
+{
+ angle += 0.01;
+ for(var i = 0; i < mp; i++)
+ {
+ var p = particles[i];
+ //Updating X and Y coordinates
+ //We will add 1 to the cos function to prevent negative values which will lead flakes to move upwards
+ //Every particle has its own density which can be used to make the downward movement different for each flake
+ //Lets make it more random by adding in the radius
+ p.y += Math.cos(angle+p.d) + 1 + p.r/2;
+ p.x += Math.sin(angle) * 2;
+ 
+ //Sending flakes back from the top when it exits
+ //Lets make it a bit more organic and let flakes enter from the left and right also.
+ if(p.x > W+5 || p.x < -5 || p.y > H)
+ {
+ if(i%3 > 0) //66.67% of the flakes
+ {
+ particles[i] = {x: Math.random()*W, y: -10, r: p.r, d: p.d};
+ }
+ else
+ {
+ //If the flake is exitting from the right
+ if(Math.sin(angle) > 0)
+ {
+ //Enter from the left
+ particles[i] = {x: -5, y: Math.random()*H, r: p.r, d: p.d};
+ }
+ else
+ {
+ //Enter from the right
+ particles[i] = {x: W+5, y: Math.random()*H, r: p.r, d: p.d};
+ }
+ }
+ }
+ }
+}
+
+            
+            
+            
+
+        </script>
+    </body>
+</html>
+
+
