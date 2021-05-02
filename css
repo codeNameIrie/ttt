@@ -1,0 +1,107 @@
+
+
+
+h1 {
+    color: #6BE5E1;
+    margin-left: 500px;
+}
+
+body {
+    background-image: url("../img/Vader-Background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+
+#lightsaber {
+    margin-left: 430px;
+    margin-top: -90px;
+}
+
+
+#gameboard {
+    height: 577px;
+    width: 735px;
+    background-color: #ffffff;
+    opacity: 65%;
+    margin-left: 400px;
+    border-radius: 10px;
+}
+
+
+/*Styling the table*/
+td {
+    border: 5px solid #e56b6f;
+    height: 187px;
+    width: 250px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table tr:first-child td {
+    border-top: 0;
+}
+
+
+table tr:last-child td {
+    border-bottom: 0;
+}
+
+
+table tr td:first-child  {
+    border-left: 0;
+}
+
+table tr td:last-child  {
+    border-right: 0;
+}
+
+
+.message {
+    height: 50px;
+    text-align: center;
+    color: yellow;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+
+#replay {
+    margin-top: 50px;
+    margin-left: 720px;
+}
+
+/*Game characters: Darth Vader and Chewbacca (aka Chewy)*/
+.playerChewy {
+    background-image: url('../img/chewy.png');
+}
+
+
+.playerVader {
+    background-image: url('../img/Vader.png');
+}
+
+.canvasleft {
+    background-color: tomato;
+    height: 600px;
+    width: 400px;
+    margin-left: -405px;
+    margin-top: -600px;
+    opacity: 20%;
+}
+
+.canvasright {
+    background-color: violet;
+    height: 600px;
+    width: 359px;
+    margin-left: 740px;
+    margin-top: -600px;
+    opacity: 40%;
+}
+
